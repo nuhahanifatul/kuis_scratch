@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kuis Informatika — Scratch</title>
+<style>
+:root{--navy:#102b55;--blue:#2463eb;--sky:#eaf2ff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--green:#138a58;--red:#c43d4b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#eef5ff,#f7fbff 55%,#e8f7f3);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);min-height:100vh}
+.wrap{max-width:850px;margin:0 auto;padding:24px 16px 48px}.brand{display:flex;align-items:center;gap:12px;margin:0 0 18px}.logo{width:48px;height:48px;border-radius:14px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:24px;font-weight:800}.brand h1{font-size:clamp(20px,4vw,29px);margin:0;color:var(--navy)}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.card{background:#fff;border:1px solid #e1eaf5;border-radius:22px;padding:clamp(18px,4vw,30px);box-shadow:0 16px 40px #193b6410}.hidden{display:none!important}
+h2{margin:0 0 8px;color:var(--navy)}.intro{color:var(--muted);line-height:1.6;margin:0 0 22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:14px;font-weight:700}input,select{width:100%;padding:13px 14px;border:1px solid #cbd7e6;border-radius:12px;font:inherit;background:white}input:focus,select:focus{outline:3px solid #bfdbfe;border-color:var(--blue)}
+.btn{border:0;border-radius:12px;background:var(--blue);color:white;font:700 15px inherit;padding:13px 19px;cursor:pointer;transition:.15s}.btn:hover{filter:brightness(.95);transform:translateY(-1px)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}.btn.secondary{background:#e8efff;color:var(--navy)}.startrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}.notice{background:#fff8e6;border:1px solid #f2d68c;color:#77520c;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;margin:16px 0}
+.pills{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px}.pill{font-size:13px;font-weight:800;background:var(--sky);color:var(--navy);padding:8px 12px;border-radius:999px}.timer{background:#fff0f0;color:#a32331}.progress{height:8px;background:#e9eff7;border-radius:99px;overflow:hidden;margin:0 0 24px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#2463eb,#22a783);transition:width .2s}
+.question{font-size:clamp(18px,3vw,23px);line-height:1.45;margin:0 0 20px}.answers{display:grid;gap:10px}.answer{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:14px;cursor:pointer;line-height:1.45}.answer:hover{border-color:#8aafff;background:#f8fbff}.answer input{width:auto;margin:4px 0 0;accent-color:var(--blue)}.answer:has(input:checked){border-color:var(--blue);background:#eff5ff}.nav{display:flex;justify-content:flex-end;margin-top:22px}.small{font-size:13px;color:var(--muted)}.resultscore{font-size:56px;font-weight:900;color:var(--navy);line-height:1.1}.resulttop{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:16px 0 24px}.scorecircle{width:125px;height:125px;border-radius:50%;display:grid;place-items:center;background:var(--sky);border:8px solid #c9dcff}.review{border:1px solid var(--line);border-radius:15px;padding:16px;margin:12px 0}.review h3{font-size:16px;margin:0 0 10px}.correct{color:var(--green);font-weight:800}.wrong{color:var(--red);font-weight:800}.explain{color:#475569;line-height:1.6;margin:9px 0 0}.status{padding:12px 14px;border-radius:12px;margin:14px 0;line-height:1.5}.status.ok{background:#e9f8ef;color:#12633f}.status.err{background:#fff0f0;color:#9f2633}.footer{text-align:center;color:#8a98aa;font-size:12px;margin-top:18px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.pills{align-items:flex-start;flex-wrap:wrap}.scorecircle{width:100px;height:100px}.resultscore{font-size:44px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand"><div class="logo">S</div><div><h1>Kuis Informatika: Scratch</h1><p>Latihan pemrograman — menghitung luas lingkaran</p></div></header>
+  <section id="intro" class="card">
+    <h2>Siap mengerjakan kuis?</h2>
+    <p class="intro">Isi identitas dengan benar. Soal dan urutan pilihan jawaban akan diacak. Waktu pengerjaan 15 menit dan setiap soal yang sudah dilewati tidak dapat dibuka kembali.</p>
+    <div class="grid">
+      <div class="field full"><label for="nama">Nama lengkap</label><input id="nama" autocomplete="name" maxlength="100" placeholder="Masukkan nama lengkap" required></div>
+      <div class="field"><label for="absen">Nomor absen</label><input id="absen" type="number" min="1" max="99" placeholder="Contoh: 12" required></div>
+      <div class="field"><label for="kelas">Kelas</label><input id="kelas" maxlength="30" placeholder="Contoh: VIII A" required></div>
+      <div class="field full"><label for="jenis">Jenis tes</label><select id="jenis"><option value="Pretest">Pretest</option><option value="Posttest">Posttest</option></select></div>
+    </div>
+    <div class="notice"><b>Perhatian:</b> Setelah menekan Mulai, timer langsung berjalan. Jangan menyegarkan atau menutup halaman sebelum mengirim jawaban. Hasil dan pembahasan ditampilkan setelah selesai.</div>
+    <div class="startrow"><span class="small">10 soal · 10 poin per soal · Maksimal 100</span><button id="startBtn" class="btn">Mulai kuis →</button></div>
+    <div id="introError" class="status err hidden"></div>
+  </section>
+
+  <section id="quiz" class="card hidden">
+    <div class="pills"><span id="progressText" class="pill">Soal 1 dari 10</span><span id="timer" class="pill timer">15:00</span></div>
+    <div class="progress"><span id="progressBar"></span></div>
+    <p id="questionText" class="question"></p>
+    <div id="answers" class="answers"></div>
+    <div class="nav"><button id="nextBtn" class="btn" disabled>Jawab & lanjut →</button></div>
+    <p class="small" style="margin-top:14px">Soal yang sudah dilewati tidak dapat dibuka kembali.</p>
+  </section>
+
+  <section id="result" class="card hidden">
+    <h2>Kuis selesai!</h2>
+    <p id="resultLead" class="intro"></p>
+    <div class="resulttop"><div class="scorecircle"><div><div id="score" class="resultscore">0</div><div class="small" style="text-align:center">dari 100</div></div></div><div><h2 id="resultLabel">Hasil kamu</h2><p id="resultDetail" class="intro" style="margin:4px 0"></p><div id="saveStatus" class="status">Mengirim hasil...</div></div></div>
+    <h2 style="margin-top:26px">Pembahasan soal</h2><p class="intro">Pelajari jawaban benar dan penjelasan setiap soal berikut.</p>
+    <div id="reviews"></div>
+    <div class="startrow"><span class="small">Nilai tersimpan di Google Sheets jika koneksi Apps Script telah diatur.</span><button id="finishBtn" class="btn secondary">Selesai</button></div>
+  </section>
+  <div class="footer">Kuis Informatika · Scratch</div>
+</div>
+<script>
+/* GANTI URL DI BAWAH dengan URL Web App Google Apps Script yang berakhiran /exec */
+const GOOGLE_SCRIPT_URL = "TEMPEL_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
+
+const QUESTIONS = [
+ {id:1,q:"Komponen pemrograman pada Scratch yang digunakan untuk menyimpan data input seperti panjang jari-jari disebut ….",options:["Sprite","Backdrop","Variabel","Stage"],correct:2,explain:"Variabel digunakan untuk menyimpan nilai/data, misalnya jari-jari dan luas lingkaran."},
+ {id:2,q:"Blok perintah di Scratch yang berfungsi meminta input masukan dari pengguna adalah ….",options:["say […]","ask […] and wait","when green flag clicked","set [variabel] to"],correct:1,explain:"Blok ask […] and wait meminta pengguna memasukkan jawaban lalu menunggu sampai input diberikan."},
+ {id:3,q:"Jawaban angka yang dimasukkan oleh pengguna saat program dijalankan secara otomatis disimpan pada blok bawaan Scratch bernama ….",options:["answer","score","costume","motion"],correct:0,explain:"Scratch menyimpan input dari blok ask and wait pada reporter bawaan answer."},
+ {id:4,q:"Kategori warna hijau pada Scratch yang berisi blok perhitungan tambah, kurang, kali, dan bagi adalah ….",options:["Sensing","Motion","Operators","Variables"],correct:2,explain:"Kategori Operators berisi operasi matematika dan logika, termasuk tambah, kurang, perkalian, dan pembagian."},
+ {id:5,q:"Rumus matematika untuk menghitung luas lingkaran adalah ….",options:["p × l","π × r × r","2 × π × r","½ × a × t"],correct:1,explain:"Luas lingkaran dihitung dengan rumus L = π × r × r atau πr². Pilihan C adalah rumus keliling lingkaran."},
+ {id:6,q:"Untuk menyusun ekspresi perkalian 3,14 × r × r pada Scratch, kita membutuhkan gabungan dari … blok perkalian.",options:["1","2","3","4"],correct:1,explain:"Ekspresi 3,14 × r × r memerlukan dua operasi perkalian: hasil 3,14 × r, lalu dikalikan r."},
+ {id:7,q:"Jika masukan nilai jari-jari dari pengguna adalah 10, maka hasil variabel luas adalah ….",options:["31,4","62,8","314","3140"],correct:2,explain:"L = 3,14 × 10 × 10 = 314. Jadi, nilai luas adalah 314 satuan persegi."},
+ {id:8,q:"Blok perintah yang berfungsi menampilkan kalimat gabungan antara teks dan variabel nilai luas adalah ….",options:["join [teks] [variabel] pada kategori Operators","broadcast pada kategori Events","repeat pada kategori Control","touching pada kategori Sensing"],correct:0,explain:"Blok join pada kategori Operators menggabungkan teks dengan nilai variabel menjadi satu teks."},
+ {id:9,q:"Jika hasil output Scratch untuk r = 7 menunjukkan angka 153,86 namun saat diuji dengan r = 0 output tetap 153,86, kesalahan logika terjadi pada ….",options:["Variabel belum diperbarui dengan blok set [luas] to yang baru","Monitor komputer rusak","Keyboard tidak berfungsi","Warna sprite tidak sesuai"],correct:0,explain:"Variabel luas harus dihitung ulang setiap program dijalankan. Jika tidak diperbarui, nilai sebelumnya dapat tetap tampil."},
+ {id:10,q:"Keuntungan utama menggunakan program Scratch untuk menghitung luas lingkaran dibandingkan kalkulator biasa adalah ….",options:["Lebih lambat memproses data","Dapat dijalankan secara otomatis dengan tampilan visual interaktif","Tidak memerlukan logika program","Tidak butuh data masukan"],correct:1,explain:"Scratch memungkinkan perhitungan otomatis melalui alur program dan dapat menampilkan interaksi visual kepada pengguna."}
+];
+const $=id=>document.getElementById(id);
+let quiz=[], index=0, answers={}, student={}, deadline=0, timerHandle=null, submitted=false;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){["intro","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id));window.scrollTo({top:0,behavior:"smooth"});}
+$("startBtn").addEventListener("click",()=>{
+ const nama=$("nama").value.trim(), absen=$("absen").value.trim(), kelas=$("kelas").value.trim();
+ if(!nama||!absen||!kelas||Number(absen)<1){$("introError").textContent="Lengkapi nama, nomor absen, dan kelas dengan benar."; $("introError").classList.remove("hidden");return;}
+ student={nama,absen,kelas,jenis:$("jenis").value};
+ quiz=shuffle(QUESTIONS).map(q=>({...q,options:shuffle(q.options.map((text,originalIndex)=>({text,originalIndex})))}));
+ // correct is tracked by original option index so answer randomization cannot change the key
+ index=0;answers={};submitted=false;deadline=Date.now()+15*60*1000;
+ show("quiz");renderQuestion();startTimer();
+ history.pushState({quiz:true},"","#sedang-mengerjakan");
+});
+function renderQuestion(){
+ const q=quiz[index];$("progressText").textContent=`Soal ${index+1} dari ${quiz.length}`;
+ $("progressBar").style.width=`${index/quiz.length*100}%`;$("questionText").textContent=q.q;
+ $("answers").innerHTML="";
+ q.options.forEach((o,i)=>{const label=document.createElement("label");label.className="answer";
+ const input=document.createElement("input");input.type="radio";input.name="answer";input.value=String(i);
+ input.addEventListener("change",()=>{$("nextBtn").disabled=false;});
+ const span=document.createElement("span");span.textContent=String.fromCharCode(65+i)+". "+o.text;
+ label.append(input,span);$("answers").append(label);});
+ $("nextBtn").disabled=true;$("nextBtn").textContent=index===quiz.length-1?"Kirim jawaban ✓":"Jawab & lanjut →";
+}
+$("nextBtn").addEventListener("click",()=>{
+ const picked=document.querySelector('input[name="answer"]:checked');if(!picked)return;
+ const q=quiz[index];answers[q.id]=q.options[Number(picked.value)].originalIndex;
+ if(index<quiz.length-1){index++;renderQuestion();}else finishQuiz("Selesai dikerjakan");
+});
+function startTimer(){clearInterval(timerHandle);updateTimer();timerHandle=setInterval(updateTimer,250);}
+function updateTimer(){const left=Math.max(0,deadline-Date.now());const secs=Math.ceil(left/1000);$("timer").textContent=`${String(Math.floor(secs/60)).padStart(2,"0")}:${String(secs%60).padStart(2,"0")}`;if(left<=0){clearInterval(timerHandle);finishQuiz("Waktu habis");}}
+function finishQuiz(reason){
+ if(submitted)return;submitted=true;clearInterval(timerHandle);
+ const correctCount=QUESTIONS.filter(q=>answers[q.id]===q.correct).length;const score=Math.round(correctCount/QUESTIONS.length*100);
+ $("score").textContent=score;$("resultLead").textContent=`${student.nama} · ${student.kelas} · ${student.jenis}. ${reason}.`;
+ $("resultLabel").textContent=score>=80?"Bagus sekali!":score>=60?"Terus berlatih!":"Jangan menyerah!";
+ $("resultDetail").textContent=`Jawaban benar: ${correctCount} dari ${QUESTIONS.length}. Setiap soal bernilai 10 poin.`;
+ $("reviews").innerHTML="";
+ // Review in the randomized question order; correct option text remains accurate
+ quiz.forEach((q,i)=>{
+   const userIndex=answers[q.id];const userText=userIndex===undefined?"Tidak dijawab":q.options.find(o=>o.originalIndex===userIndex)?.text;
+   const correctText=QUESTIONS.find(x=>x.id===q.id).options[q.correct];
+   const isCorrect=userIndex===q.correct;
+   const el=document.createElement("div");el.className="review";
+   const h=document.createElement("h3");h.textContent=`${i+1}. ${q.q}`;
+   const yours=document.createElement("div");yours.className=isCorrect?"correct":"wrong";yours.textContent=`Jawaban kamu: ${userText}${isCorrect?" ✓":" ✕"}`;
+   const right=document.createElement("div");right.className="correct";right.textContent=`Jawaban benar: ${String.fromCharCode(65+q.options.findIndex(o=>o.originalIndex===q.correct))}. ${correctText}`;
+   const exp=document.createElement("p");exp.className="explain";exp.textContent=q.explain;
+   el.append(h,yours,right,exp);$("reviews").append(el);
+ });
+ show("result");sendResult({student,score,correctCount,total:QUESTIONS.length,answers,reason});
+}
+async function sendResult(payload){
+ const status=$("saveStatus");
+ if(!GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/")){
+  status.className="status err";status.textContent="Hasil dihitung di halaman ini, tetapi belum dikirim ke Google Sheets. Pasang URL Web App Apps Script pada GOOGLE_SCRIPT_URL di index.html.";return;
+ }
+ status.className="status";status.textContent="Mengirim nilai ke Google Sheets…";
+ try{
+   // no-cors avoids preflight for Apps Script. The browser cannot read the response, so this confirms only that sending was attempted.
+   await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({nama:payload.student.nama,absen:payload.student.absen,kelas:payload.student.kelas,jenis:payload.student.jenis,nilai:payload.score,benar:payload.correctCount,total:payload.total,detailJawaban:payload.answers,alasan:payload.reason})});
+   status.className="status ok";status.textContent="Pengiriman telah dilakukan. Periksa Google Sheets untuk memastikan data masuk.";
+ }catch(e){status.className="status err";status.textContent="Pengiriman gagal. Periksa koneksi internet, URL Apps Script, dan izin Web App.";}
+}
+$("finishBtn").addEventListener("click",()=>{show("intro");});
+window.addEventListener("popstate",()=>{if(!submitted&&!$("quiz").classList.contains("hidden")){history.pushState({quiz:true},"","#sedang-mengerjakan");}});
+window.addEventListener("beforeunload",e=>{if(!$("quiz").classList.contains("hidden")&&!submitted){e.preventDefault();e.returnValue="Kuis sedang berlangsung. Jika keluar, jawaban dapat hilang."; }});
+</script>
+</body>
+</html>
